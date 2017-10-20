@@ -1,0 +1,9 @@
+False
+False
+False
+0
+0
+0
+None
+None
+None

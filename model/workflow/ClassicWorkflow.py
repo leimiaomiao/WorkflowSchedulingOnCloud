@@ -10,6 +10,7 @@ class ClassicWorkflow(object):
         self.cost = None
         self.reliability = None
         self.rel_constraint = None
+        self.name = "CW"
 
     @property
     def task_list_length(self):
@@ -23,8 +24,9 @@ class ClassicWorkflow(object):
             print(task.pre_task_id_list, task.task_id, task.suc_task_id_list)
 
     def create(self, workflow_type):
+        self.name = "CW%s" % workflow_type
         task_dict = dict()
-        file_path = "../../workflow_files/workflow%s/taskFile.txt" % workflow_type
+        file_path = "workflow_files/workflow%s/taskFile.txt" % workflow_type
         file = open(file_path, "r")
         line = file.readline()
         while line:

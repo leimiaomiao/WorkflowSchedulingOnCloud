@@ -11,6 +11,7 @@ class RandomWorkflow(object):
         self.cost = None
         self.reliability = None
         self.rel_constraint = None
+        self.name = "RW"
 
     @property
     def task_list_length(self):
@@ -24,6 +25,7 @@ class RandomWorkflow(object):
             print(task.pre_task_id_list, task.task_id, task.suc_task_id_list)
 
     def create(self, task_number):
+        self.name = "RW%s" % task_number
         entry_task = Task(0, [], [])
         exit_task = Task(task_number - 1, [], [])
 
