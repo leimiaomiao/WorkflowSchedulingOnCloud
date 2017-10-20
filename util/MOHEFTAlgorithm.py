@@ -32,7 +32,7 @@ class MOHEFTAlgorithm(object):
         return individual_task_list
 
     def process(self):
-        k = constant.PARETO_RESULT_NUM
+        k = constant.RANDOM_TIME
 
         # 记录当前的pareto列表，元素为一个individual_task的列表
         result = list()

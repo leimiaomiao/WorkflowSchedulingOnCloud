@@ -13,16 +13,17 @@ class RandomAlgorithm(object):
         self.rel_restraint = rel_restraint
 
         i = 0
-        while i < constant.PARETO_RESULT_NUM:
+        while i < constant.RANDOM_TIME:
             individual = Individual(self, i, workflow)
             individual.schedule()
-            self.individual_list.append(individual)
-            i += 1
+            if individual.reliability <= self.rel_restraint:
+                self.individual_list.append(individual)
+                i += 1
 
         self.max_id = len(self.individual_list) - 1
 
         # 初始化pareto解集
-        self.pareto_result = ParetoAlgorithm.get_pareto_result_with_restraint(self.individual_list, self.rel_restraint)
+        self.pareto_result = ParetoAlgorithm.get_pareto_result(self.individual_list)
 
     def init_task_list_order_pos(self):
         # 任务排序初始化
