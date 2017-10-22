@@ -1,7 +1,7 @@
 from model.Individual import Individual, IndividualTask
 from config import constant
 import copy
-from util.CrowdingDistanceAlgorithm import CrowdingDistanceAlgorithm
+# from util.CrowdingDistanceAlgorithm import CrowdingDistanceAlgorithm
 from util.ParetoAlgorithm import ParetoAlgorithm
 
 
@@ -30,6 +30,15 @@ class MOHEFTAlgorithm(object):
             individual_task_list.append(individual_task)
 
         return individual_task_list
+
+    @staticmethod
+    def individual_select_by_reliability(individual_list, reliability):
+        new_individual_list = []
+        for individual in individual_list:
+            if individual.calc_rel() <= reliability:
+                new_individual_list.append(individual)
+
+        return new_individual_list
 
     def process(self):
         k = constant.RANDOM_TIME
@@ -67,10 +76,11 @@ class MOHEFTAlgorithm(object):
                     to_select_list.append(individual_temp)
                     individual_id += 1
 
-            crowding_distance_algorithm = CrowdingDistanceAlgorithm()
-            result = crowding_distance_algorithm.individual_select_by_crowding_distance(to_select_list, k)
+            result = self.individual_select_by_reliability(to_select_list, self.rel_restraint)
+            # crowding_distance_algorithm = CrowdingDistanceAlgorithm()
+            # result = crowding_distance_algorithm.individual_select_by_crowding_distance(to_select_list, k)
 
-        self.pareto_result = ParetoAlgorithm.get_pareto_result_with_restraint(result, self.rel_restraint)
+        self.pareto_result = ParetoAlgorithm.get_pareto_result(result)
 
         # print(len(self.pareto_result))
         # for result in self.pareto_result:

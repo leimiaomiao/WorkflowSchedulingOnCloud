@@ -15,7 +15,7 @@ def sort_result_by_makespan(result):
 
 
 if __name__ == "__main__":
-    while True:
+    if True:
         # 初始化一个工作流
         # workflow = RandomWorkflow()
         # workflow.create(constant.TASK_NUM)
@@ -38,17 +38,17 @@ if __name__ == "__main__":
         random_result_sort_by_makespan = sort_result_by_makespan(randomAlgorithm.pareto_result)
         FileUtil.dump_result_to_file(random_result_sort_by_makespan, randomAlgorithm.name, workflow.name)
 
-        # MOWS-DTM算法
-        mowsDtmAlgorithm = GeneticAlgorithm(workflow, rel_restraint)
-        mowsDtmAlgorithm.process()
-        mows_dtm_result_sort_by_makespan = sort_result_by_makespan(mowsDtmAlgorithm.pareto_result)
-        FileUtil.dump_result_to_file(mows_dtm_result_sort_by_makespan, mowsDtmAlgorithm.name, workflow.name)
-
         # MOHEFT算法
         moheftAlgorithm = MOHEFTAlgorithm(workflow, rel_restraint)
         moheftAlgorithm.process()
         moheft_result_sort_by_makespan = sort_result_by_makespan(moheftAlgorithm.pareto_result)
         FileUtil.dump_result_to_file(moheft_result_sort_by_makespan, moheftAlgorithm.name, workflow.name)
+
+        # MOWS-DTM算法
+        mowsDtmAlgorithm = GeneticAlgorithm(workflow, rel_restraint)
+        mowsDtmAlgorithm.process()
+        mows_dtm_result_sort_by_makespan = sort_result_by_makespan(mowsDtmAlgorithm.pareto_result)
+        FileUtil.dump_result_to_file(mows_dtm_result_sort_by_makespan, mowsDtmAlgorithm.name, workflow.name)
 
         metric_result = list()
 
@@ -73,5 +73,5 @@ if __name__ == "__main__":
             "%s_%s_%s_%s" % (workflow.name, randomAlgorithm.name, mowsDtmAlgorithm.name, moheftAlgorithm.name)
         )
 
-        if len(mowsDtmAlgorithm.pareto_result) >= 10:
-            break
+        # if len(mowsDtmAlgorithm.pareto_result) >= 10:
+        #     break
