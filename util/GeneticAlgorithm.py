@@ -120,11 +120,8 @@ class GeneticAlgorithm(object):
     def individual_task_pos_mutate(individual):
         mutate_pos = random.randint(0, len(individual.individual_task_list) - 1)
 
-        pm = 0.5  # 变异系数
-        p = random.random()
         new_individual = copy.deepcopy(individual)
-        if p <= pm:
-            new_individual.individual_task_list[mutate_pos].exec_pos = int(random.randrange(0, 15))
+        new_individual.individual_task_list[mutate_pos].exec_pos = int(random.randrange(0, 15))
         return new_individual
 
     @staticmethod
@@ -235,7 +232,7 @@ class GeneticAlgorithm(object):
                 if individual.makespan == i.makespan and individual.cost == i.cost:
                     exist = True
 
-            if exist is False and individual.reliability <= self.rel_restraint:
+            if exist is False and individual.reliability >= self.rel_restraint:
                 filter_result.append(individual)
         crowding_distance_algorithm = CrowdingDistanceAlgorithm()
         return crowding_distance_algorithm.individual_select_by_crowding_distance(filter_result,

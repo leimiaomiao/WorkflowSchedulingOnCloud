@@ -38,7 +38,7 @@ class ParetoAlgorithm(object):
                             defeat = True
                             break
                     j += 1
-                if defeat is False and pareto_list[i].reliability <= rel_restraint:
+                if defeat is False and pareto_list[i].reliability >= rel_restraint:
                     new_pareto_list.append(pareto_list[i])
                 i += 1
         return new_pareto_list

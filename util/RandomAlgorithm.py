@@ -16,7 +16,7 @@ class RandomAlgorithm(object):
         while i < constant.RANDOM_TIME:
             individual = Individual(self, i, workflow)
             individual.schedule()
-            if individual.reliability <= self.rel_restraint:
+            if individual.reliability >= self.rel_restraint:
                 self.individual_list.append(individual)
                 i += 1
 

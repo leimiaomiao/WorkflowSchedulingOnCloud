@@ -1,7 +1,7 @@
 from model.Individual import Individual, IndividualTask
 from config import constant
 import copy
-# from util.CrowdingDistanceAlgorithm import CrowdingDistanceAlgorithm
+from util.CrowdingDistanceAlgorithm import CrowdingDistanceAlgorithm
 from util.ParetoAlgorithm import ParetoAlgorithm
 
 
@@ -31,17 +31,16 @@ class MOHEFTAlgorithm(object):
 
         return individual_task_list
 
-    @staticmethod
-    def individual_select_by_reliability(individual_list, reliability):
-        new_individual_list = []
-        for individual in individual_list:
-            if individual.calc_rel() <= reliability:
-                new_individual_list.append(individual)
+    def individual_select_by_reliability(self, individual_list, num):
+        new_individual_list = self.sort_result_by_rel(individual_list)
+        return new_individual_list[num:]
 
-        return new_individual_list
+    @staticmethod
+    def sort_result_by_rel(result):
+        return sorted(result, key=lambda individual: individual.calc_rel(), reverse=True)
 
     def process(self):
-        k = constant.RANDOM_TIME
+        k = constant.PARETO_RESULT_NUM
 
         # 记录当前的pareto列表，元素为一个individual_task的列表
         result = list()
@@ -76,14 +75,8 @@ class MOHEFTAlgorithm(object):
                     to_select_list.append(individual_temp)
                     individual_id += 1
 
-            result = self.individual_select_by_reliability(to_select_list, self.rel_restraint)
-            # crowding_distance_algorithm = CrowdingDistanceAlgorithm()
-            # result = crowding_distance_algorithm.individual_select_by_crowding_distance(to_select_list, k)
+            to_select_list = self.individual_select_by_reliability(to_select_list, constant.RANDOM_TIME)
+            crowding_distance_algorithm = CrowdingDistanceAlgorithm()
+            result = crowding_distance_algorithm.individual_select_by_crowding_distance(to_select_list, k)
 
         self.pareto_result = ParetoAlgorithm.get_pareto_result(result)
-
-        # print(len(self.pareto_result))
-        # for result in self.pareto_result:
-        #     result.print()
-        #     result.print_results()
-        #     print("=============")
