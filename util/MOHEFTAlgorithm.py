@@ -33,7 +33,8 @@ class MOHEFTAlgorithm(object):
 
     def individual_select_by_reliability(self, individual_list, num):
         new_individual_list = self.sort_result_by_rel(individual_list)
-        return new_individual_list[num:]
+        num = min(len(individual_list), num)
+        return new_individual_list[:num]
 
     @staticmethod
     def sort_result_by_rel(result):

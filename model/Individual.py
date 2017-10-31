@@ -73,12 +73,12 @@ class Individual(object):
             individual_task)
 
         if cloud_vm.m == 1:
-            individual_task.task.cost = math.ceil(individual_task.task.rent_time / 60) * cloud_vm.cost_hourly
+            individual_task.task.cost = math.ceil(individual_task.task.rent_time) * cloud_vm.cost_hourly
         elif cloud_vm.m == 2:
             individual_task.task.cost = individual_task.task.rent_time * cloud_vm.cost_hourly
         else:
-            if individual_task.task.rent_time <= 10:
-                individual_task.task.cost = 10 * cloud_vm.cost_hourly / 60
+            if individual_task.task.rent_time <= 1/6:
+                individual_task.task.cost = 1/6 * cloud_vm.cost_hourly
             else:
                 individual_task.task.cost = individual_task.task.rent_time * cloud_vm.cost_hourly
 
@@ -88,7 +88,7 @@ class Individual(object):
         start_time = 0
         for task_id in individual_task.task.pre_task_id_list:
             pre_task = self.get_individual_task_by_id(task_id).task
-            wait_time = pre_task.output / constant.CLOUD_BANDWIDTH
+            wait_time = pre_task.output / constant.CLOUD_BANDWIDTH / 60 / 60
             time = wait_time + pre_task.end_time
             if time > start_time:
                 start_time = time
@@ -99,7 +99,7 @@ class Individual(object):
         for task_id in individual_task.task.pre_task_id_list:
             pre_task = self.get_individual_task_by_id(task_id).task
             output += pre_task.output
-        return output / constant.CLOUD_BANDWIDTH
+        return output / constant.CLOUD_BANDWIDTH / 60 / 60
 
     @staticmethod
     def get_exec_time(individual_task):
@@ -110,7 +110,7 @@ class Individual(object):
 
     @staticmethod
     def get_send_time(individual_task):
-        send_time = individual_task.task.output * len(individual_task.task.suc_task_id_list) / constant.CLOUD_BANDWIDTH
+        send_time = individual_task.task.output * len(individual_task.task.suc_task_id_list) / constant.CLOUD_BANDWIDTH / 60 / 60
         return send_time
 
     def schedule(self):

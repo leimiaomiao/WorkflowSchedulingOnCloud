@@ -3,7 +3,7 @@ from config import constant
 
 class FileUtil(object):
     @staticmethod
-    def dump_result_to_file(result, algorithm_name, workflow_name):
+    def dump_result_to_file(result, algorithm_name, workflow_name, rel_percentage=constant.PERCENTAGE):
         dir_path = "experiment_data/"
 
         file_name = "%s_%s_%s_%s_%s_%s_%s_%s" % \
@@ -14,7 +14,7 @@ class FileUtil(object):
                      constant.MAX_OUTPUT_NUM,
                      constant.MIN_WORKLOAD_NUM,
                      constant.MAX_WORKLOAD_NUM,
-                     constant.PERCENTAGE
+                     rel_percentage
                      )
 
         file_path = "%s%s.csv" % (dir_path, file_name)
@@ -28,14 +28,13 @@ class FileUtil(object):
     @staticmethod
     def dump_metric_result_to_file(result_list, name):
         dir_path = "experiment_data/"
-        file_name = "Metrics_%s_%s_%s_%s_%s_%s_%s" % \
+        file_name = "Metrics_%s_%s_%s_%s_%s_%s" % \
                     (name,
                      constant.TASK_NUM,
                      constant.MIN_OUTPUT_NUM,
                      constant.MAX_OUTPUT_NUM,
                      constant.MIN_WORKLOAD_NUM,
-                     constant.MAX_WORKLOAD_NUM,
-                     constant.PERCENTAGE)
+                     constant.MAX_WORKLOAD_NUM)
 
         file_path = "%s%s.txt" % (dir_path, file_name)
 
