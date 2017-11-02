@@ -3,15 +3,15 @@ from model.Individual import Individual, IndividualTask
 
 
 class MinRelAlgorithm(object):
-    def __init__(self, workflow):
+    def __init__(self, workflow, lambda_list):
         # 随机初始化种群
         self.workflow = workflow
         self.name = "MinRel"
 
         i = 0
-        individual = Individual(self, i, workflow)
-        individual.schedule()
-        self.rel = individual.calc_rel()
+        self.individual = Individual(self, i, workflow, lambda_list)
+        self.individual.schedule()
+        self.rel = self.individual.calc_rel()
 
     def init_task_list_order_pos(self):
         # 任务排序初始化

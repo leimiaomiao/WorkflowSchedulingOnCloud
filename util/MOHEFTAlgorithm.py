@@ -6,12 +6,12 @@ from util.ParetoAlgorithm import ParetoAlgorithm
 
 
 class MOHEFTAlgorithm(object):
-    def __init__(self, workflow, rel_restraint):
+    def __init__(self, workflow, rel_restraint, lambda_list):
         self.name = "MOHEFT"
         self.workflow = workflow
         self.rel_restraint = rel_restraint
 
-        self.individual = Individual(self, 0, workflow)
+        self.individual = Individual(self, 0, workflow, lambda_list)
         self.pareto_result = list()
 
     def init_task_list_order_pos(self):
@@ -40,7 +40,7 @@ class MOHEFTAlgorithm(object):
     def sort_result_by_rel(result):
         return sorted(result, key=lambda individual: individual.calc_rel(), reverse=True)
 
-    def process(self):
+    def process(self, max_rel_individual, max_rel):
         k = constant.PARETO_RESULT_NUM
 
         # 记录当前的pareto列表，元素为一个individual_task的列表
@@ -64,8 +64,12 @@ class MOHEFTAlgorithm(object):
                         individual_temp.individual_task_list.append(task_temp_list[i])
 
                         individual_temp.schedule()
-                        to_select_list.append(individual_temp)
-                        individual_id += 1
+                        last_task = individual_temp.individual_task_list[
+                            len(individual_temp.individual_task_list) - 1].task
+                        if last_task.reliability >= max_rel_individual.get_individual_task_by_id(
+                                last_task.task_id).task.reliability * self.rel_restraint / max_rel:
+                            to_select_list.append(individual_temp)
+                            individual_id += 1
             else:
                 for i in range(0, 15):
                     individual_temp = copy.deepcopy(self.individual)
@@ -73,10 +77,13 @@ class MOHEFTAlgorithm(object):
                     individual_temp.individual_task_list = [task_temp_list[i]]
 
                     individual_temp.schedule()
-                    to_select_list.append(individual_temp)
-                    individual_id += 1
+                    last_task = individual_temp.individual_task_list[len(individual_temp.individual_task_list) - 1].task
+                    if last_task.reliability >= max_rel_individual.get_individual_task_by_id(
+                            last_task.task_id).task.reliability * self.rel_restraint / max_rel:
+                        to_select_list.append(individual_temp)
+                        individual_id += 1
 
-            to_select_list = self.individual_select_by_reliability(to_select_list, constant.RANDOM_TIME)
+            # to_select_list = self.individual_select_by_reliability(to_select_list, constant.RANDOM_TIME)
             crowding_distance_algorithm = CrowdingDistanceAlgorithm()
             result = crowding_distance_algorithm.individual_select_by_crowding_distance(to_select_list, k)
 

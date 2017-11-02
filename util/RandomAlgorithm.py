@@ -5,7 +5,7 @@ from util.ParetoAlgorithm import ParetoAlgorithm
 
 
 class RandomAlgorithm(object):
-    def __init__(self, workflow, rel_restraint):
+    def __init__(self, workflow, rel_restraint, lambda_list):
         # 随机初始化种群
         self.individual_list = list()
         self.workflow = workflow
@@ -14,7 +14,7 @@ class RandomAlgorithm(object):
 
         i = 0
         while i < constant.RANDOM_TIME:
-            individual = Individual(self, i, workflow)
+            individual = Individual(self, i, workflow, lambda_list)
             individual.schedule()
             if individual.reliability >= self.rel_restraint:
                 self.individual_list.append(individual)

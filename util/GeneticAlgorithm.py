@@ -10,7 +10,7 @@ class GeneticAlgorithm(object):
     # 遗传算法初始化
     paretoAlgorithm = ParetoAlgorithm()
 
-    def __init__(self, workflow, rel_restraint):
+    def __init__(self, workflow, rel_restraint, lambda_list):
         # 随机初始化种群
         self.individual_list = list()
         self.workflow = workflow
@@ -19,7 +19,7 @@ class GeneticAlgorithm(object):
 
         i = 0
         while i < constant.INDIVIDUAL_NUM:
-            individual = Individual(self, i, workflow)
+            individual = Individual(self, i, workflow, lambda_list)
             individual.schedule()
             self.individual_list.append(individual)
             i += 1

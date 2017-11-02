@@ -15,10 +15,11 @@ class Individual(object):
     reliability = 0
     individual_id = 0
 
-    def __init__(self, algorithm, individual_id, workflow):
+    def __init__(self, algorithm, individual_id, workflow, lambda_list):
         self.individual_id = individual_id
         self.workflow = workflow
         self.individual_task_list = algorithm.init_task_list_order_pos()
+        self.lambda_list = lambda_list
 
     def print(self):
         for individual_task in self.individual_task_list:
@@ -101,11 +102,10 @@ class Individual(object):
             output += pre_task.output
         return output / constant.CLOUD_BANDWIDTH / 60 / 60
 
-    @staticmethod
-    def get_exec_time(individual_task):
+    def get_exec_time(self, individual_task):
         m = int(individual_task.exec_pos / 5) + 1
         vm_type = individual_task.exec_pos % 5 + 1
-        cloud_vm = CloudVM(m, vm_type)
+        cloud_vm = CloudVM(m, vm_type, self.lambda_list)
         return individual_task.task.work_load / cloud_vm.compute_unit, cloud_vm
 
     @staticmethod
