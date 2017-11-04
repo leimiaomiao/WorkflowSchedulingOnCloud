@@ -84,6 +84,7 @@ class MOHEFTAlgorithm(object):
                         individual_id += 1
 
             # to_select_list = self.individual_select_by_reliability(to_select_list, constant.RANDOM_TIME)
+            to_select_list = ParetoAlgorithm.get_pareto_result(to_select_list)
             crowding_distance_algorithm = CrowdingDistanceAlgorithm()
             result = crowding_distance_algorithm.individual_select_by_crowding_distance(to_select_list, k)
 
