@@ -21,7 +21,7 @@ class FileUtil(object):
 
         file = open(file_path, "w", encoding="utf-8")
         for individual in result:
-            string = "%s,%s\n" % (individual.makespan, individual.cost)
+            string = "%s,%s,%s\n" % (individual.makespan, individual.cost, individual.reliability)
             file.write(string)
         file.close()
 

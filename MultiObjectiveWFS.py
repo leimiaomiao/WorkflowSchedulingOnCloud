@@ -37,6 +37,7 @@ if __name__ == "__main__":
             for percentage in [0.2, 0.4, 0.6, 0.8]:
             # for percentage in [0.5]:
                 rel_restraint = min_rel + percentage * (max_rel - min_rel)
+                print("可靠度下限是: %s" % rel_restraint)
 
                 print("Random")
                 # RANDOM算法

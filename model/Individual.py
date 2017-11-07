@@ -36,21 +36,21 @@ class Individual(object):
     # 整个工作流完工时间
     def calc_makespan(self):
         last_task = self.individual_task_list[len(self.individual_task_list) - 1]
-        return last_task.task.end_time
+        return round(last_task.task.end_time, 2)
 
     # 整个工作流完工的花费
     def calc_cost(self):
         cost = 0
         for individual_task in self.individual_task_list:
             cost += individual_task.task.cost
-        return cost
+        return round(cost, 2)
 
     # 整个工作流完工的可靠性
     def calc_rel(self):
         rel = 1
         for individual_task in self.individual_task_list:
             rel += individual_task.task.reliability
-        return rel
+        return round(rel, 2)
 
     @staticmethod
     def is_task_ready_to_exec(individual_task, finish_task_id_list):
@@ -78,8 +78,8 @@ class Individual(object):
         elif cloud_vm.m == 2:
             individual_task.task.cost = individual_task.task.rent_time * cloud_vm.cost_hourly
         else:
-            if individual_task.task.rent_time <= 1/6:
-                individual_task.task.cost = 1/6 * cloud_vm.cost_hourly
+            if individual_task.task.rent_time <= 1 / 6:
+                individual_task.task.cost = 1 / 6 * cloud_vm.cost_hourly
             else:
                 individual_task.task.cost = individual_task.task.rent_time * cloud_vm.cost_hourly
 
@@ -110,7 +110,8 @@ class Individual(object):
 
     @staticmethod
     def get_send_time(individual_task):
-        send_time = individual_task.task.output * len(individual_task.task.suc_task_id_list) / constant.CLOUD_BANDWIDTH / 60 / 60
+        send_time = individual_task.task.output * len(
+            individual_task.task.suc_task_id_list) / constant.CLOUD_BANDWIDTH / 60 / 60
         return send_time
 
     def schedule(self):
